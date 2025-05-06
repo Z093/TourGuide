@@ -21,20 +21,20 @@ jobs:
 
     - name: Build gpsUtil dependency
       run: |
-        git clone https://github.com/ALEXD2758/OC-P8-TOURGUIDE-GPSUTIL.git
-        cd OC-P8-TOURGUIDE-GPSUTIL
+        git clone https://github.com/Z093/TourGuide.git
+        cd TourGuide
         mvn install
 
     - name: Build tripPricer dependency
       run: |
-        git clone https://github.com/ALEXD2758/OC-P8-TOURGUIDE-TRIPPRICER.git
-        cd OC-P8-TOURGUIDE-TRIPPRICER
+        git clone https://github.com/Z093/TourGuide.git
+        cd TourGuide
         mvn install
 
     - name: Build rewardCentral dependency
       run: |
-        git clone https://github.com/ALEXD2758/OC-P8-TOURGUIDE-REWARDS-CENTRAL.git
-        cd OC-P8-TOURGUIDE-REWARDS-CENTRAL
+        git clone https://github.com/Z093/TourGuide.git
+        cd TourGuide
         mvn install
 
     - name: Compile project
