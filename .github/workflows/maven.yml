@@ -22,16 +22,19 @@ jobs:
     - name: Build gpsUtil dependency
       run: |
         git clone https://github.com/Z093/TourGuide.git
+        cd TourGuide/libs
         mvn install
 
     - name: Build tripPricer dependency
       run: |
         git clone https://github.com/Z093/TourGuide.git
+         cd TourGuide/libs
         mvn install
 
     - name: Build rewardCentral dependency
       run: |
         git clone https://github.com/Z093/TourGuide.git
+         cd TourGuide/libs
         mvn install
 
     - name: Compile project
