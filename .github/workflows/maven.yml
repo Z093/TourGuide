@@ -18,10 +18,7 @@ jobs:
       with:
         distribution: 'temurin'
         java-version: '17'
-
-    - name: Clone dependencies repository
-      run: |
-        git clone https://github.com/OpenClassrooms-Student-Center/JavaPathENProject8.git dependencies
+        
 
     - name: Build gpsUtil dependency
       run: |
