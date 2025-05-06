@@ -21,33 +21,36 @@ jobs:
 
     - name: Build gpsUtil dependency
       run: |
-        git clone https://github.com/Z093/TourGuide.git
-        cd TourGuide/libs
+        rm -rf gpsUtil
+        git clone https://github.com/Z093/TourGuide.git gpsUtil
+        cd gpsUtil
         mvn install
 
     - name: Build tripPricer dependency
       run: |
-        git clone https://github.com/Z093/TourGuide.git
-         cd TourGuide/libs
+        rm -rf tripPricer
+        git clone https://github.com/Z093/TourGuide.git tripPricer
+        cd tripPricer
         mvn install
 
     - name: Build rewardCentral dependency
       run: |
-        git clone https://github.com/Z093/TourGuide.git
-         cd TourGuide/libs
+        rm -rf rewardCentral
+        git clone https://github.com/Z093/TourGuide.git rewardCentral
+        cd rewardCentral
         mvn install
 
     - name: Compile project
-      run: cd TourGuide && mvn compile
+      run: mvn compile
 
     - name: Run all tests (including performance tests)
-      run: cd TourGuide && mvn test
+      run: mvn test
 
     - name: Build artifact
-      run: cd TourGuide && mvn package
+      run: mvn package
 
     - name: Upload artifact
       uses: actions/upload-artifact@v4
       with:
         name: my-artifact
-        path: TourGuide/target/*.jar
+        path: target/*.jar
