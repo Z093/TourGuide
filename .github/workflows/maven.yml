@@ -18,35 +18,39 @@ jobs:
       with:
         distribution: 'temurin'
         java-version: '17'
-        
 
     - name: Build gpsUtil dependency
+      run: |
         cd TourGuide/libs/gpsUtil
-      run: mvn install
-    
+        mvn install
 
     - name: Build tripPricer dependency
-         cd TourGuide/libs/tripPricer
-      run: mvn install 
+      run: |
+        cd TourGuide/libs/tripPricer
+        mvn install
 
     - name: Build rewardCentral dependency
+      run: |
         cd TourGuide/libs/rewardCentral
-      run: mvn install
+        mvn install
 
     - name: Compile project
-       cd TourGuide
-      run: mvn compile
+      run: |
+        cd TourGuide
+        mvn compile
 
     - name: Run all tests (including performance tests)
+      run: |
         cd TourGuide
-      run: mvn test
+        mvn test
 
     - name: Build artifact
-       cd TourGuide
-      run: mvn package
+      run: |
+        cd TourGuide
+        mvn package
 
     - name: Upload artifact
       uses: actions/upload-artifact@v4
       with:
         name: my-artifact
-        path: target/*.jar
+        path: TourGuide/target/*.jar
