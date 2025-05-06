@@ -19,7 +19,7 @@ jobs:
         distribution: 'temurin'
         java-version: '17'
 
-       - name: Compile project
+    - name: Compile project
       run: cd TourGuide && mvn compile
 
     - name: Run all tests (including performance tests)
@@ -33,4 +33,3 @@ jobs:
       with:
         name: my-artifact
         path: app/target/*.jar
-
