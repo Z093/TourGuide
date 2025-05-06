@@ -19,6 +19,24 @@ jobs:
         distribution: 'temurin'
         java-version: '17'
 
+    - name: Build gpsUtil dependency
+      run: |
+        git clone https://github.com/ALEXD2758/OC-P8-TOURGUIDE-GPSUTIL.git
+        cd OC-P8-TOURGUIDE-GPSUTIL
+        mvn install
+
+    - name: Build tripPricer dependency
+      run: |
+        git clone https://github.com/ALEXD2758/OC-P8-TOURGUIDE-TRIPPRICER.git
+        cd OC-P8-TOURGUIDE-TRIPPRICER
+        mvn install
+
+    - name: Build rewardCentral dependency
+      run: |
+        git clone https://github.com/ALEXD2758/OC-P8-TOURGUIDE-REWARDS-CENTRAL.git
+        cd OC-P8-TOURGUIDE-REWARDS-CENTRAL
+        mvn install
+
     - name: Compile project
       run: cd TourGuide && mvn compile
 
@@ -32,4 +50,4 @@ jobs:
       uses: actions/upload-artifact@v4
       with:
         name: my-artifact
-        path: app/target/*.jar
+        path: TourGuide/target/*.jar
