@@ -15,6 +15,10 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.Random;
 import java.util.UUID;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
@@ -30,6 +34,8 @@ import gpsUtil.location.VisitedLocation;
 import tripPricer.Provider;
 import tripPricer.TripPricer;
 
+import com.openclassrooms.tourguide.dto.NearbyAttractionDTO;
+
 @Service
 public class TourGuideService {
 	private Logger logger = LoggerFactory.getLogger(TourGuideService.class);
@@ -38,11 +44,16 @@ public class TourGuideService {
 	private final TripPricer tripPricer = new TripPricer();
 	public final Tracker tracker;
 	boolean testMode = true;
+	private ExecutorService executorService;
 
 	public TourGuideService(GpsUtil gpsUtil, RewardsService rewardsService) {
 		this.gpsUtil = gpsUtil;
 		this.rewardsService = rewardsService;
-		
+
+		// Initialisation du ExecutorService pour le traitement parallèle
+		int processors = Runtime.getRuntime().availableProcessors();
+		executorService = Executors.newFixedThreadPool(processors * 2);
+
 		Locale.setDefault(Locale.US);
 
 		if (testMode) {
@@ -95,6 +106,29 @@ public class TourGuideService {
 		return visitedLocation;
 	}
 
+	/**
+	 * Tracks user locations in parallel for a list of users
+	 * @param users List of users to track
+	 * @return List of VisitedLocation objects
+	 */
+	public List<VisitedLocation> trackUserLocationsInParallel(List<User> users) {
+		try {
+			List<CompletableFuture<VisitedLocation>> futures = users.stream()
+					.map(user -> CompletableFuture.supplyAsync(() -> trackUserLocation(user), executorService))
+					.collect(Collectors.toList());
+
+			// Wait for all futures to complete and collect results
+			List<VisitedLocation> visitedLocations = futures.stream()
+					.map(CompletableFuture::join)
+					.collect(Collectors.toList());
+
+			return visitedLocations;
+		} catch (Exception e) {
+			logger.error("Error tracking user locations in parallel", e);
+			throw e;
+		}
+	}
+
 	public List<Attraction> getNearByAttractions(VisitedLocation visitedLocation) {
 		List<Attraction> nearbyAttractions = new ArrayList<>();
 		for (Attraction attraction : gpsUtil.getAttractions()) {
@@ -106,18 +140,79 @@ public class TourGuideService {
 		return nearbyAttractions;
 	}
 
+	/**
+	 * Get the five closest attractions to the user's location
+	 * @param visitedLocation The user's current location
+	 * @param user The user to calculate rewards for
+	 * @return A list of at most five NearbyAttractionDTO objects
+	 */
+	public List<NearbyAttractionDTO> getFiveClosestAttractions(VisitedLocation visitedLocation, User user) {
+		List<Attraction> attractions = gpsUtil.getAttractions();
+
+		// Calculate distances and create a list of attractions with their distances
+		List<Map.Entry<Attraction, Double>> attractionsWithDistances = new ArrayList<>();
+		for (Attraction attraction : attractions) {
+			double distance = rewardsService.getDistance(attraction, visitedLocation.location);
+			attractionsWithDistances.add(Map.entry(attraction, distance));
+		}
+
+		// Sort by distance
+		attractionsWithDistances.sort(Map.Entry.comparingByValue());
+
+		// Take the 5 closest attractions
+		List<NearbyAttractionDTO> closestAttractions = new ArrayList<>();
+		for (int i = 0; i < Math.min(5, attractionsWithDistances.size()); i++) {
+			Map.Entry<Attraction, Double> entry = attractionsWithDistances.get(i);
+			Attraction attraction = entry.getKey();
+			double distance = entry.getValue();
+			int rewardPoints = rewardsService.getRewardPoints(attraction, user);
+
+			NearbyAttractionDTO dto = new NearbyAttractionDTO(
+					attraction.attractionName,
+					attraction.latitude,
+					attraction.longitude,
+					visitedLocation.location.latitude,
+					visitedLocation.location.longitude,
+					distance,
+					rewardPoints
+			);
+
+			closestAttractions.add(dto);
+		}
+
+		return closestAttractions;
+	}
+
+	public void shutdown() {
+		if (executorService != null) {
+			executorService.shutdown();
+			try {
+				if (!executorService.awaitTermination(10, TimeUnit.SECONDS)) {
+					executorService.shutdownNow();
+				}
+			} catch (InterruptedException e) {
+				executorService.shutdownNow();
+				Thread.currentThread().interrupt();
+			}
+		}
+		tracker.stopTracking();
+	}
+
 	private void addShutDownHook() {
 		Runtime.getRuntime().addShutdownHook(new Thread() {
 			public void run() {
 				tracker.stopTracking();
+				if (executorService != null) {
+					executorService.shutdown();
+				}
 			}
 		});
 	}
 
 	/**********************************************************************************
-	 * 
+	 *
 	 * Methods Below: For Internal Testing
-	 * 
+	 *
 	 **********************************************************************************/
 	private static final String tripPricerApiKey = "test-server-api-key";
 	// Database connection will be used for external users, but for testing purposes
@@ -160,5 +255,4 @@ public class TourGuideService {
 		LocalDateTime localDateTime = LocalDateTime.now().minusDays(new Random().nextInt(30));
 		return Date.from(localDateTime.toInstant(ZoneOffset.UTC));
 	}
-
 }
