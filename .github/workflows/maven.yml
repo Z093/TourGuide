@@ -41,16 +41,16 @@ jobs:
         mvn install
 
     - name: Compile project
-      run: mvn compile
+      run: cd TourGuide && mvn compile
 
     - name: Run all tests (including performance tests)
-      run: mvn test
+      run: cd TourGuide && mvn test
 
     - name: Build artifact
-      run: mvn package
+      run: cd TourGuide && mvn package
 
     - name: Upload artifact
       uses: actions/upload-artifact@v4
       with:
         name: my-artifact
-        path: target/*.jar
+        path: app/target/*.jar
