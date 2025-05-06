@@ -22,21 +22,21 @@ jobs:
     - name: Build gpsUtil dependency
       run: |
         rm -rf gpsUtil
-        git clone https://github.com/Z093/TourGuide.git gpsUtil
+        git clone https://github.com/Z093/TourGuide.git 
         cd gpsUtil
         mvn install
 
     - name: Build tripPricer dependency
       run: |
         rm -rf tripPricer
-        git clone https://github.com/Z093/TourGuide.git tripPricer
+        git clone https://github.com/Z093/TourGuide.git 
         cd tripPricer
         mvn install
 
     - name: Build rewardCentral dependency
       run: |
         rm -rf rewardCentral
-        git clone https://github.com/Z093/TourGuide.git rewardCentral
+        git clone https://github.com/Z093/TourGuide.git 
         cd rewardCentral
         mvn install
 
