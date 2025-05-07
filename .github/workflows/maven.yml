@@ -21,37 +21,14 @@ jobs:
 
     - name: Clone dependencies repository
       run: |
-        git clone https://github.com/OpenClassrooms-Student-Center/JavaPathENProject8.git TourGuide
+        git clone https://github.com/OpenClassrooms-Student-Center/JavaPathENProject8.git dependencies
 
-    - name: Build gpsUtil TourGuide
+    - name: Check folder structure
       run: |
-        cd TourGuide/libs/gpsUtil
-        mvn install
+        ls -R dependencies
 
-    - name: Build tripPricer TourGuide
-      run: |
-        cd TourGuide/libs/tripPricer
-        mvn install
-
-    - name: Build rewardCentral TourGuide
-      run: |
-        cd TourGuide/libs/rewardCentral
-        mvn install
-
-    - name: Compile project
-      run: |
-        mvn compile
-
-    - name: Run all tests (including performance tests)
-      run: |
-        mvn test
-
-    - name: Build artifact
-      run: |
-        mvn package
-
-    - name: Upload artifact
-      uses: actions/upload-artifact@v4
-      with:
-        name: my-artifact
-        path: target/*.jar
+    # Commenter temporairement les étapes suivantes jusqu'à ce qu'on valide les chemins corrects
+    # - name: Build gpsUtil dependency
+    #   run: |
+    #     cd dependencies/libs/gpsUtil
+    #     mvn install
