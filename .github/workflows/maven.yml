@@ -19,24 +19,39 @@ jobs:
         distribution: 'temurin'
         java-version: '17'
 
+    - name: Clone dependencies repository
+      run: |
+        git clone https://github.com/OpenClassrooms-Student-Center/JavaPathENProject8.git dependencies
+
+    - name: Build gpsUtil dependency
+      run: |
+        cd dependencies/libs/gpsUtil
+        mvn install
+
+    - name: Build tripPricer dependency
+      run: |
+        cd dependencies/libs/tripPricer
+        mvn install
+
+    - name: Build rewardCentral dependency
+      run: |
+        cd dependencies/libs/rewardCentral
+        mvn install
 
     - name: Compile project
       run: |
-        cd TourGuide
         mvn compile
 
     - name: Run all tests (including performance tests)
       run: |
-        cd TourGuide
         mvn test
 
     - name: Build artifact
       run: |
-        cd TourGuide
         mvn package
 
     - name: Upload artifact
       uses: actions/upload-artifact@v4
       with:
         name: my-artifact
-        path: TourGuide/target/*.jar
+        path: target/*.jar
