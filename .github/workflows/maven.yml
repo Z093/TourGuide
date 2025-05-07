@@ -21,21 +21,21 @@ jobs:
 
     - name: Clone dependencies repository
       run: |
-        git clone https://github.com/OpenClassrooms-Student-Center/JavaPathENProject8.git dependencies
+        git clone https://github.com/OpenClassrooms-Student-Center/JavaPathENProject8.git libs
 
-    - name: Build gpsUtil dependency
+    - name: Build gpsUtil libs
       run: |
-        cd dependencies/libs/gpsUtil
+        cd libs/gpsUtil
         mvn install
 
-    - name: Build tripPricer dependency
+    - name: Build tripPricer libs
       run: |
-        cd dependencies/libs/tripPricer
+        cd libs/tripPricer
         mvn install
 
-    - name: Build rewardCentral dependency
+    - name: Build rewardCentral libs
       run: |
-        cd dependencies/libs/rewardCentral
+        cd libs/rewardCentral
         mvn install
 
     - name: Compile project
