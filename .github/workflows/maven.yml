@@ -21,17 +21,17 @@ jobs:
 
     - name: Build gpsUtil dependency
       run: |
-        cd TourGuide/libs/gpsUtil
+        cd TourGuide/libs
         mvn install
 
     - name: Build tripPricer dependency
       run: |
-        cd TourGuide/libs/tripPricer
+        cd TourGuide/libs
         mvn install
 
     - name: Build rewardCentral dependency
       run: |
-        cd TourGuide/libs/rewardCentral
+        cd TourGuide/libs
         mvn install
 
     - name: Compile project
