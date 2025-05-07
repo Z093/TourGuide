@@ -19,20 +19,6 @@ jobs:
         distribution: 'temurin'
         java-version: '17'
 
-    - name: Build gpsUtil dependency
-      run: |
-        cd TourGuide/libs
-        mvn install
-
-    - name: Build tripPricer dependency
-      run: |
-        cd TourGuide/libs
-        mvn install
-
-    - name: Build rewardCentral dependency
-      run: |
-        cd TourGuide/libs
-        mvn install
 
     - name: Compile project
       run: |
