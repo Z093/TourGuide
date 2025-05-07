@@ -23,11 +23,6 @@ jobs:
       run: |
         git clone https://github.com/OpenClassrooms-Student-Center/JavaPathENProject8.git dependencies
 
-    - name: Copy dependency jars
-      run: |
-        mkdir -p dependencies/TourGuide/libs
-        cp dependencies/TourGuide/libs/*.jar dependencies/TourGuide/libs/
-
     - name: Compile project
       run: |
         cd dependencies/TourGuide
