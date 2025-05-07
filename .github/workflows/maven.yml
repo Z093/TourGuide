@@ -23,12 +23,28 @@ jobs:
       run: |
         git clone https://github.com/OpenClassrooms-Student-Center/JavaPathENProject8.git dependencies
 
-    - name: Check folder structure
+    - name: Copy dependency jars
       run: |
-        ls -R dependencies
+        mkdir -p dependencies/TourGuide/libs
+        cp dependencies/TourGuide/libs/*.jar dependencies/TourGuide/libs/
 
-    # Commenter temporairement les étapes suivantes jusqu'à ce qu'on valide les chemins corrects
-    # - name: Build gpsUtil dependency
-    #   run: |
-    #     cd dependencies/libs/gpsUtil
-    #     mvn install
+    - name: Compile project
+      run: |
+        cd dependencies/TourGuide
+        mvn compile
+
+    - name: Run all tests (including performance tests)
+      run: |
+        cd dependencies/TourGuide
+        mvn test
+
+    - name: Build artifact
+      run: |
+        cd dependencies/TourGuide
+        mvn package
+
+    - name: Upload artifact
+      uses: actions/upload-artifact@v4
+      with:
+        name: my-artifact
+        path: dependencies/TourGuide/target/*.jar
