@@ -24,10 +24,49 @@ jobs:
         cd TourGuide
         mvn compile
 
-    - name: Run all tests (including performance tests)
-      run: |
-        cd TourGuide
-        mvn test
+     - name: Run unit tests (excluding performance)
+        run: |
+          cd TourGuide
+          mvn test -Dtest='*TestTourGuideService' -DexcludeTests='TestTourGuideService#highVolumeTrackLocation+TestTourGuideService#highVolumeGetRewards'
+
+
+           performance-track:
+    name: Performance Test - highVolumeTrackLocation
+    runs-on: ubuntu-latest
+    needs: ci-tests
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up JDK 17
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'temurin'
+          java-version: '17'
+
+      - name: Run highVolumeTrackLocation
+        run: |
+          cd TourGuide
+          mvn test -Dtest=TestTourGuideService#highVolumeTrackLocation
+
+  performance-rewards:
+    name: Performance Test - highVolumeGetRewards
+    runs-on: ubuntu-latest
+    needs: ci-tests
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up JDK 17
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'temurin'
+          java-version: '17'
+
+      - name: Run highVolumeGetRewards
+        run: |
+          cd TourGuide
+          mvn test -Dtest=TestTourGuideService#highVolumeGetRewards
 
     - name: Build artifact
       run: |
