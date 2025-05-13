@@ -29,7 +29,7 @@ jobs:
       - name: Run unit tests (excluding performance)
         run: |
           cd TourGuide
-          mvn test -Dtest='*TestTourGuideService' -DexcludeTests='TestPerformance'
+          mvn test -Dtest='*TestTourGuideService' -DexcludeTests='TestTourGuideService#highVolumeTrackLocation+TestTourGuideService#highVolumeGetRewards'
 
       - name: Build artifact
         run: |
@@ -42,7 +42,7 @@ jobs:
           name: tourguide-artifact
           path: TourGuide/target/*.jar
 
-   performance-track:
+  performance-track:
     name: Performance Test - highVolumeTrackLocation
     runs-on: ubuntu-latest
     needs: ci-tests
