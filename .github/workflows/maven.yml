@@ -105,7 +105,23 @@ jobs:
           cd TourGuide
           mvn test -Dtest=TestPerformance#highVolumeTrackLocation -Duser.count=10000
 
+  performance-track-50000:
+    name: Performance Test - highVolumeTrackLocation with 50000 users
+    runs-on: ubuntu-latest
+    needs: ci-tests
+    steps:
+      - uses: actions/checkout@v4
+      - name: Set up JDK 17
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'temurin'
+          java-version: '17'
+      - name: Run highVolumeTrackLocation with 50000 users
+        run: |
+          cd TourGuide
+          mvn test -Dtest=TestPerformance#highVolumeTrackLocation -Duser.count=50000
 
+          
   performance-track-100000:
     name: Performance Test - highVolumeTrackLocation with 100000 users
     runs-on: ubuntu-latest
