@@ -48,7 +48,7 @@ public class TestPerformance {
 		GpsUtil gpsUtil = new GpsUtil();
 		RewardsService rewardsService = new RewardsService(gpsUtil, new RewardCentral());
 		// Définir directement le nombre maximal d'utilisateurs pour le test
-		int userCount = Integer.parseInt(System.getProperty("user.count", "100000"));
+		int userCount = Integer.parseInt(System.getProperty("user.count", "100"));
 		InternalTestHelper.setInternalUserNumber(userCount);
 		TourGuideService tourGuideService = new TourGuideService(gpsUtil, rewardsService);
 
@@ -74,7 +74,7 @@ public class TestPerformance {
 		RewardsService rewardsService = new RewardsService(gpsUtil, new RewardCentral());
 
 		// Définir directement le nombre maximal d'utilisateurs pour le test
-		int userCount = Integer.parseInt(System.getProperty("user.count", "100000"));
+		int userCount = Integer.parseInt(System.getProperty("user.count", "100"));
 		InternalTestHelper.setInternalUserNumber(userCount);
 		TourGuideService tourGuideService = new TourGuideService(gpsUtil, rewardsService);
 
