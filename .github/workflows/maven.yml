@@ -42,7 +42,7 @@ jobs:
           name: tourguide-artifact
           path: TourGuide/target/*.jar
 
-  performance-track:
+   performance-track:
     name: Performance Test - highVolumeTrackLocation
     runs-on: ubuntu-latest
     needs: ci-tests
@@ -56,10 +56,10 @@ jobs:
           distribution: 'temurin'
           java-version: '17'
 
-      - name: Run highVolumeTrackLocation
+      - name: Run highVolumeTrackLocation with 5000 users
         run: |
           cd TourGuide
-          mvn test -Dtest=TestPerformance#highVolumeTrackLocation
+          mvn test -Dtest=TestTourGuideService#highVolumeTrackLocation -Duser.count=5000
 
   performance-rewards:
     name: Performance Test - highVolumeGetRewards
@@ -75,7 +75,7 @@ jobs:
           distribution: 'temurin'
           java-version: '17'
 
-      - name: Run highVolumeGetRewards
+      - name: Run highVolumeGetRewards with 7500 users
         run: |
           cd TourGuide
-          mvn test -Dtest=TestPerformance#highVolumeGetRewards
+          mvn test -Dtest=TestTourGuideService#highVolumeGetRewards -Duser.count=7500
