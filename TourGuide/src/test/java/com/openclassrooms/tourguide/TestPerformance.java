@@ -48,7 +48,7 @@ public class TestPerformance {
 		GpsUtil gpsUtil = new GpsUtil();
 		RewardsService rewardsService = new RewardsService(gpsUtil, new RewardCentral());
 		// Définir directement le nombre maximal d'utilisateurs pour le test
-		int userCount = Integer.parseInt(System.getProperty("user.count", "100"));
+		int userCount = Integer.parseInt(System.getProperty("user.count", "5000"));
 		InternalTestHelper.setInternalUserNumber(userCount);
 		TourGuideService tourGuideService = new TourGuideService(gpsUtil, rewardsService);
 
@@ -64,7 +64,7 @@ public class TestPerformance {
 		tourGuideService.tracker.stopTracking();
 
 		System.out.println("highVolumeTrackLocation: Time Elapsed: "
-				+ TimeUnit.MILLISECONDS.toSeconds(stopWatch.getTime()) + " seconds.");
+				+ TimeUnit.MILLISECONDS.toSeconds(stopWatch.getTime()) + " seconds" + " for " + userCount + " users.");
 		assertTrue(TimeUnit.MINUTES.toSeconds(15) >= TimeUnit.MILLISECONDS.toSeconds(stopWatch.getTime()));
 	}
 
@@ -74,7 +74,7 @@ public class TestPerformance {
 		RewardsService rewardsService = new RewardsService(gpsUtil, new RewardCentral());
 
 		// Définir directement le nombre maximal d'utilisateurs pour le test
-		int userCount = Integer.parseInt(System.getProperty("user.count", "100"));
+		int userCount = Integer.parseInt(System.getProperty("user.count", "7500"));
 		InternalTestHelper.setInternalUserNumber(userCount);
 		TourGuideService tourGuideService = new TourGuideService(gpsUtil, rewardsService);
 
@@ -105,7 +105,7 @@ public class TestPerformance {
 		}
 
 		System.out.println("highVolumeGetRewards: Time Elapsed: " +
-				TimeUnit.MILLISECONDS.toSeconds(stopWatch.getTime()) + " seconds.");
+				TimeUnit.MILLISECONDS.toSeconds(stopWatch.getTime()) + " seconds" + " for " + userCount + " users.");
 		assertTrue(TimeUnit.MINUTES.toSeconds(20) >= TimeUnit.MILLISECONDS.toSeconds(stopWatch.getTime()));
 	}
 }
