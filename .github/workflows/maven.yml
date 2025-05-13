@@ -29,7 +29,7 @@ jobs:
       - name: Run unit tests (excluding performance)
         run: |
           cd TourGuide
-          mvn test -Dtest='*TestTourGuideService' -DexcludeTests='TestTourGuideService#highVolumeTrackLocation+TestTourGuideService#highVolumeGetRewards'
+           mvn test -Dtest=TestTourGuideService,TestRewardsService -DexcludeTests=TestPerformance
 
       - name: Build artifact
         run: |
@@ -59,7 +59,7 @@ jobs:
       - name: Run highVolumeTrackLocation with 5000 users
         run: |
           cd TourGuide
-          mvn test -Dtest=TestTourGuideService#highVolumeTrackLocation -Duser.count=5000
+          mvn test -Dtest=TestPerformance#highVolumeTrackLocation -Duser.count=5000
 
   performance-rewards:
     name: Performance Test - highVolumeGetRewards
@@ -78,4 +78,4 @@ jobs:
       - name: Run highVolumeGetRewards with 7500 users
         run: |
           cd TourGuide
-          mvn test -Dtest=TestTourGuideService#highVolumeGetRewards -Duser.count=7500
+          mvn test -Dtest=TestPerformance#highVolumeGetRewards -Duser.count=7500
